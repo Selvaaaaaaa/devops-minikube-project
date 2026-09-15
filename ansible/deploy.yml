@@ -1,0 +1,44 @@
+- name: DevOps CI/CD Deployment
+  hosts: local
+  connection: local
+  gather_facts: false
+
+  tasks:
+
+    - name: Test application syntax
+      ansible.builtin.command:
+        cmd: python3 -m py_compile ../app/app.py
+      args:
+        chdir: "{{ playbook_dir }}"
+      changed_when: false
+
+    - name: Build Docker image
+      ansible.builtin.command:
+        cmd: docker build -t devops-flask-app:v1 ../app
+      args:
+        chdir: "{{ playbook_dir }}"
+
+    - name: Load Docker image into Minikube
+      ansible.builtin.command:
+        cmd: minikube image load devops-flask-app:v1
+
+    - name: Deploy Kubernetes application
+      ansible.builtin.command:
+        cmd: kubectl apply -f ../k8s/deployment.yaml
+
+    - name: Deploy Kubernetes service
+      ansible.builtin.command:
+        cmd: kubectl apply -f ../k8s/service.yaml
+
+    - name: Wait for deployment
+      ansible.builtin.command:
+        cmd: kubectl rollout status deployment/devops-flask --timeout=180s
+
+    - name: Show Kubernetes pods
+      ansible.builtin.command:
+        cmd: kubectl get pods
+      register: pods
+
+    - name: Display Kubernetes pods
+      ansible.builtin.debug:
+        var: pods.stdout
