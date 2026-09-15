@@ -21,7 +21,7 @@
 
     - name: Load Docker image into Minikube
       ansible.builtin.command:
-        cmd: sudo -u selvaa sudo -n /usr/local/sbin/jenkins-minikube-image-load
+        cmd: sudo -n -u selvaa /usr/local/sbin/jenkins-minikube-image-load
 
     - name: Deploy Kubernetes application
       ansible.builtin.command:
