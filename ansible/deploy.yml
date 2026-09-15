@@ -1,3 +1,4 @@
+---
 - name: DevOps CI/CD Deployment
   hosts: local
   connection: local
@@ -20,7 +21,7 @@
 
     - name: Load Docker image into Minikube
       ansible.builtin.command:
-        cmd: minikube image load devops-flask-app:v1
+        cmd: sudo -u selvaa sudo -n /usr/local/sbin/jenkins-minikube-image-load
 
     - name: Deploy Kubernetes application
       ansible.builtin.command:
