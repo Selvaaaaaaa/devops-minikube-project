@@ -1,14 +1,15 @@
-from flask import Flask
+from flask import Flask, jsonify, render_template
 
 app = Flask(__name__)
 
 @app.route("/")
 def home():
-    return "Hello from DevOps CI/CD Pipeline!"
+    return render_template("index.html")
 
 @app.route("/health")
 def health():
-    return "Application is healthy"
+    return jsonify(status="healthy", application="Regex Pattern Tester")
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000)
+

@@ -19,8 +19,8 @@ spec:
     spec:
       containers:
         - name: devops-flask
-          image: devops-flask-app:v1
-          imagePullPolicy: Never
+          image: localhost:5000/devops-flask-app:v1
+          imagePullPolicy: Always
 
           ports:
             - containerPort: 5000
